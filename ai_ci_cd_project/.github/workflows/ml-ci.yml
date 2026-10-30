@@ -2,13 +2,17 @@ name: ML CI Pipeline
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
+
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
+
+  workflow_dispatch:
 
 jobs:
   test-and-train:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -24,8 +28,9 @@ jobs:
           pip install numpy scikit-learn joblib pytest
 
       - name: Run automated tests
-        run: pytest
+        working-directory: ai_ci_cd_project
+        run: pytest -v
 
       - name: Run model training pipeline
+        working-directory: ai_ci_cd_project
         run: python train.py
-
